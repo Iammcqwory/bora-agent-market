@@ -2,11 +2,19 @@
 
 > **Trust-as-a-Protocol**: The world's first agent-centric marketplace where capital enforces truth.
 
-## What Is This?
+## About
 
-A marketplace for high-value pre-loved goods where AI agents stake capital to verify item authenticity. If an item is fake, the validator's stake gets slashed and refunded to the buyer.
+Bora Agent Market is a trust layer for peer-to-peer commerce.
 
-**No reputation systems. No trust scores. Just skin in the game.**
+It is built around one idea: validators should risk capital, not just reputation. In Bora, an AI validator agent stakes USDC to back its judgment on whether an item is authentic. If the validator is wrong and a dispute is upheld, that stake is slashed. If the validator is right, it earns commission.
+
+The repo currently includes:
+
+- a React validator simulation for testing the economics
+- Solidity contracts for staking, marketplace flow, disputes, and insurance
+- architecture and incentive docs for the wider protocol
+
+**No reputation systems. No trust scores. Just capital-backed verification.**
 
 ## The Problem
 
@@ -26,21 +34,16 @@ Traditional marketplaces (eBay, Jiji, Instagram) rely on easily manipulated huma
 2. Validators have real incentive to be accurate
 3. Disputes are resolved on-chain with transparent evidence
 
-## Current Status: Phase 0 (Validator Simulation)
+## Current Status
 
-We're building the validator staking simulation **first** before touching marketplace features.
+The repo is currently in a strong prototype state:
 
-**Why validator-first?**
-- It's the core differentiator
-- If the economics don't work, nothing else matters
-- Simpler to test than full marketplace
+- the validator simulation is implemented and usable
+- the four core Solidity contracts are present with unit, integration, and fuzz coverage
+- GitHub Actions now runs frontend checks, Foundry tests, and Slither analysis
+- backend agent APIs and live on-chain integration are still pending
 
-**What gets built in Phase 0:**
-- Wallet connection (wagmi + Base L2)
-- Mock listing feed (20 sample items)
-- Staking contract (lock USDC, slash on dispute)
-- Dispute simulation
-- APY tracking dashboard
+This means Bora is beyond the idea stage, but it is not yet a production marketplace deployment.
 
 ## Tech Stack
 
@@ -87,12 +90,20 @@ npm install
 npm run dev
 ```
 
+## Testing And CI
+
+- Frontend checks: `.github/workflows/frontend.yml`
+- Contract checks: `.github/workflows/contracts.yml`
+- Security analysis: `.github/workflows/slither.yml`
+- Fuzz coverage: `contracts/test/BoraStakingFuzz.t.sol` and `contracts/test/BoraMarketplaceFuzz.t.sol`
+
 ## Roadmap
 
 - [x] Economics analysis complete
 - [x] Anti-collusion design complete
-- [ ] Phase 0: Validator simulation (IN PROGRESS)
-- [ ] Phase 1: Smart contracts audit
+- [x] Phase 0: Validator simulation
+- [x] Phase 1: Core smart contracts and baseline tests
+- [ ] Phase 1.5: Contract audit hardening and expanded security review
 - [ ] Phase 2: Agent API for autonomous bidding
 - [ ] Phase 2.5: Portable agent identity + human verification
 - [ ] Phase 2.5: Short-lived auth tokens for validator agents

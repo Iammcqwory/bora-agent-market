@@ -1,0 +1,28 @@
+name: Contracts
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  forge-test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Show Foundry version
+        run: forge --version
+
+      - name: Run contract test suite
+        run: forge test -vvv

@@ -1,0 +1,24 @@
+name: Slither
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Run Slither
+        uses: crytic/slither-action@v0.4.0
+        with:
+          target: contracts/src
+          fail-on: high
+          slither-config: |
+            {
+              "filter_paths": "lib|script|test"
+            }
