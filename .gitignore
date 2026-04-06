@@ -1,0 +1,14 @@
+dev-server.out.log
+dev-server.err.log
+*.log
+.DS_Store
+
+validator-sim/dist/
+validator-sim/node_modules/
+validator-sim/.vite/
+
+contracts/out/
+contracts/cache/
+contracts/lib/
+contracts/broadcast/
+contracts/.env

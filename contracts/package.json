@@ -1,0 +1,14 @@
+{
+  "name": "bora-staking-contracts",
+  "version": "0.1.0",
+  "description": "Smart contracts for Bora Agent Market validator staking",
+  "scripts": {
+    "test": "forge test",
+    "test:gas": "forge test --gas-report",
+    "coverage": "forge coverage",
+    "deploy:sepolia": "forge script script/Deploy.s.sol:DeployScript --rpc-url base_sepolia --broadcast --verify",
+    "deploy:mainnet": "forge script script/Deploy.s.sol:DeployScript --rpc-url base --broadcast --verify"
+  },
+  "author": "@iammcqwory",
+  "license": "MIT"
+}
