@@ -62,7 +62,7 @@ contract BoraStaking is ReentrancyGuard, Ownable {
                                 EVENTS
     //////////////////////////////////////////////////////////////*/
 
-    event StakeLocked(
+    event StakeCreated(
         uint256 indexed stakeId,
         address indexed validator,
         uint256 indexed listingId,
@@ -176,7 +176,7 @@ contract BoraStaking is ReentrancyGuard, Ownable {
         validatorTotalStaked[validator] += requiredStake;
         validatorStakes[validator].push(stakeId);
 
-        emit StakeLocked(stakeId, validator, listingId, requiredStake);
+        emit StakeCreated(stakeId, validator, listingId, requiredStake);
         emit InsurancePremiumPaid(stakeId, premium);
     }
 
