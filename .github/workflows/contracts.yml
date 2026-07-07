@@ -24,5 +24,10 @@ jobs:
       - name: Show Foundry version
         run: forge --version
 
+      - name: Install contract dependencies
+        run: |
+          forge install foundry-rs/forge-std@v1.9.4
+          forge install OpenZeppelin/openzeppelin-contracts@v5.1.0
+
       - name: Run contract test suite
         run: forge test -vvv

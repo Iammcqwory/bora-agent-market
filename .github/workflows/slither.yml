@@ -9,16 +9,31 @@ on:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: contracts
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Run Slither
-        uses: crytic/slither-action@v0.4.0
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
         with:
-          target: contracts/src
-          fail-on: high
-          slither-config: |
-            {
-              "filter_paths": "lib|script|test"
-            }
+          version: stable
+
+      - name: Install contract dependencies
+        run: |
+          forge install foundry-rs/forge-std@v1.9.4
+          forge install OpenZeppelin/openzeppelin-contracts@v5.1.0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Slither
+        run: pip install slither-analyzer
+
+      # Run Slither with Foundry available on PATH so it can compile the project.
+      - name: Run Slither
+        run: slither . --filter-paths "lib|script|test" --fail-on high
