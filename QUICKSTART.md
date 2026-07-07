@@ -1,25 +1,24 @@
 # Bora Agent Market - Quick Start Guide
 
-> Get the entire project running in 10 minutes
+> Get the current prototype running and understand what is ready versus what still needs hardening.
 
 ---
 
 ## Project Structure
 
-```
+```text
 bora-agent-market/
-├── validator-sim/        ← Phase 0: Economics simulation (React app)
-├── contracts/            ← Phase 1: Smart contracts (Solidity + Foundry)
-├── backend/              ← Phase 2: Agent API (TBD)
-└── docs/                 ← Strategy & architecture docs
+├── validator-sim/        # Phase 0: Economics simulation (React + Vite)
+├── contracts/            # Phase 1: Smart contracts (Solidity + Foundry)
+├── backend/              # Phase 2: Agent API scaffold target (not built yet)
+└── docs/                 # Strategy and architecture docs
     ├── economics-analysis.md
-    ├── knowledge-base.md
     └── architecture.md
 ```
 
 ---
 
-## Phase 0: Test the Economics (Validator Simulation)
+## Phase 0: Test the Economics
 
 **Time**: 5 minutes
 
@@ -29,155 +28,121 @@ npm install
 npm run dev
 ```
 
-Open http://localhost:5173
+Open <http://localhost:5173>.
 
-**What you're testing**: 
-- Will validators stake capital for 1.0% commission?
-- Does the APY justify the slashing risk?
-- How do disputes affect profitability?
+**What you are testing**
 
-**Actions**:
-1. Click "Connect Wallet" (mock connection)
-2. Stake on multiple items ($10-$1,125 stakes)
-3. Watch dashboard update (total staked, commissions, APY)
-4. Use Dispute Simulator to test slashing
+- Whether validators will stake capital for a 1.0% commission
+- Whether projected APY justifies slashing risk
+- How buyer-win and validator-win disputes affect profitability
 
-**Expected result**: APY should reach 25-40% with multiple stakes and 95% success rate.
+**Demo flow**
+
+1. Click `Start Demo` or `Connect Mock Wallet`.
+2. Take one or more validation jobs from the listings section.
+3. Watch active stake, projected APY, realized earnings, and success rate update.
+4. Use the dispute simulator to resolve a staked listing as either buyer-win or validator-win.
+
+**Useful commands**
+
+```bash
+npm run lint
+npm run test
+npm run build
+```
 
 ---
 
-## Phase 1: Run the Smart Contracts (Staking Engine)
+## Phase 1: Run the Contracts
 
-**Time**: 5 minutes
+The four core contracts are implemented:
+
+- `BoraStaking.sol`
+- `BoraMarketplace.sol`
+- `BoraDispute.sol`
+- `InsurancePool.sol`
+
+They are still pre-deployment and should be treated as hardening-stage code.
 
 ### Prerequisites
+
 ```bash
-# Install Foundry
 curl -L https://foundry.paradigm.xyz | bash
 foundryup
 ```
 
-### Test the Contracts
+### Install Contract Dependencies
+
 ```bash
 cd contracts
+forge install foundry-rs/forge-std
 forge install OpenZeppelin/openzeppelin-contracts
+```
+
+### Test The Contracts
+
+```bash
 forge build
 forge test -vv
-```
-
-**Expected output**:
-```
-Running 17 tests...
-[PASS] test_StakeRequirement_Tier1
-[PASS] test_LockStake_Success
-[PASS] test_ReleaseStake_Success
-[PASS] test_SlashStake_Success
-...
-All tests passed ✓
-```
-
-### Check Gas Usage
-```bash
 forge test --gas-report
 ```
 
-**Target**: <100k gas per stake operation
+---
+
+## Read The Strategy Docs
+
+### Economics Analysis
+
+`docs/economics-analysis.md`
+
+Covers validator incentives, stake tiers, insurance assumptions, APY targets, and marketplace unit economics.
+
+### Architecture
+
+`docs/architecture.md`
+
+Covers the contract system, dispute flow, Base L2 deployment direction, and security considerations.
 
 ---
 
-## Read the Strategy Docs
-
-### 1. Economics Analysis (`/docs/economics-analysis.md`)
-The math behind validator incentives. Answers:
-- Why 1.0% commission?
-- Why tiered stakes (20-75%)?
-- How does the insurance pool work?
-- What APY do validators need to beat DeFi?
-
-### 2. Architecture (`/docs/architecture.md`)
-Smart contract design. Covers:
-- 4 contract system (Staking, Marketplace, Dispute, Insurance)
-- Gas optimization strategies
-- Security considerations
-- Testing & deployment plan
-
-### 3. Knowledge Base (`/docs/knowledge-base.md`)
-Full project vision. Includes:
-- Trust-as-a-Protocol philosophy
-- Anti-collusion mechanisms
-- Revenue model & unit economics
-- Roadmap to break-even ($880K GMV/month)
-
----
-
-## Key Metrics to Understand
+## Key Metrics
 
 | Metric | Value | Why It Matters |
-|---|---|---|
-| Validator Target APY | 25-40% | Must beat DeFi lending (5-8%) |
-| Break-even GMV | $880K/month | 100 tx/day at $300 avg |
-| LTV:CAC | 2.14× | Needs work (target 3×+) |
-| Validators needed | 50 active | Each handles 3-5 concurrent stakes |
-| Runway to profitability | ~$280K | 18-month path, fundable |
+|---|---:|---|
+| Validator target APY | 25-40% | Must beat lower-risk capital alternatives |
+| Break-even GMV | ~$880K/month | Rough scale target for sustainability |
+| Validators needed | ~50 active | Supports concurrent listing coverage |
+| Stake requirement | 20-75% of item value | Keeps validator capital at risk |
 
 ---
 
-## What's Been Built vs. What's Next
+## Current State
 
-### ✅ Complete (Phase 0)
-- Validator simulation UI
-- Economics analysis
-- Architecture design
-- BoraStaking.sol contract
-- 17 comprehensive tests
+### Complete
 
-### 🚧 In Progress (Phase 1)
-- BoraMarketplace.sol (listings, sales)
-- BoraDispute.sol (3-tier arbitration)
-- InsurancePool.sol (shared coverage)
-- Integration tests
+- Validator economics simulation UI
+- Core Solidity contracts
+- Unit, integration, and fuzz coverage for major contract flows
+- Frontend, contract, and Slither CI workflows
+- Economics and architecture docs
 
-### 📋 Planned (Phase 2+)
-- Agent API (Node.js + Express)
-- Real wallet integration (wagmi + Base L2)
+### Still Missing
+
+- Backend agent API
+- Live wallet/on-chain frontend integration
 - Testnet deployment
-- Founding validator program
-- Mainnet launch
-
----
-
-## Common Questions
-
-**Q: Is this actually deployed on-chain?**
-A: Not yet. Phase 0 is pure simulation. Phase 1 contracts are written but not deployed. Testnet deployment comes after audit.
-
-**Q: Can I use this code?**
-A: Yes, MIT licensed. Fork it, adapt it, ship it.
-
-**Q: Why Base L2 instead of Ethereum mainnet?**
-A: Gas costs. Ethereum would make every stake transaction $10-50 in fees. Base L2 keeps it under $0.50.
-
-**Q: What if the insurance pool runs out?**
-A: Validators bear 60% of losses directly. The pool only covers 40%. At >5% dispute rate, pool depletes and validators absorb full risk (incentivizing accuracy).
-
-**Q: Why not just use traditional escrow?**
-A: Escrow requires human intermediaries and takes days. Smart contracts enforce rules automatically and settle instantly on-chain.
+- External audit and deeper security hardening
+- Production dispute operations and reviewer tooling
 
 ---
 
 ## Next Actions
 
-1. **Test the simulation**: Does the APY math check out?
-2. **Review the contracts**: Any security concerns?
-3. **Read economics doc**: Agree with the incentive model?
-4. **Challenge assumptions**: Where are the weak points?
-
-If all three check out, we proceed to:
-- Write remaining contracts (Marketplace, Dispute, Insurance)
-- Full integration testing
-- External audit
-- Testnet deployment
+1. Keep frontend and contract CI green.
+2. Expand dispute and insurance edge-case tests.
+3. Add a minimal backend API for agent identity, listing reads, validation bids, dispute evidence, and trust signals.
+4. Prepare Base Sepolia deployment only after hardening and internal review.
 
 ---
 
-Built by @iammcqwory • Bora International Group
+Built by @iammcqwory - Bora International Group

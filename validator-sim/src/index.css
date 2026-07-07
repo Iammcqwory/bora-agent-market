@@ -1,3 +1,5 @@
+@config "../tailwind.config.js";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +17,15 @@
     background-color: #0a0a0a;
     color: #ffffff;
     font-family: ui-sans-serif, system-ui, sans-serif;
+  }
+
+  button {
+    appearance: none;
+    background-color: transparent;
+    border: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
   }
 }
 
@@ -35,6 +46,49 @@
 
   .toast-enter {
     animation: toast-slide-in 180ms ease-out;
+  }
+
+  .terminal-cursor {
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  .about-word {
+    animation: about-word-in 600ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .about-panel {
+    animation: about-panel-in 360ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @keyframes about-word-in {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes about-panel-in {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
   }
 
   .panel {
