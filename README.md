@@ -36,22 +36,24 @@ Traditional marketplaces (eBay, Jiji, Instagram) rely on easily manipulated huma
 
 ## Current Status
 
-The repo is currently in a strong prototype state:
+The repo is in a strong prototype state:
 
-- the validator simulation is implemented and usable
-- the four core Solidity contracts are present with unit, integration, and fuzz coverage
-- GitHub Actions now runs frontend checks, Foundry tests, and Slither analysis
+- the validator simulation is implemented and usable, with a terminal-styled UI (home, simulator, and about views)
+- the four core Solidity contracts are present with unit, integration, and fuzz coverage, including a dedicated `InsurancePool` suite
+- GitHub Actions runs frontend checks, Foundry tests, and Slither analysis — the frontend workflow is green; the contract suite compiles and runs (a couple of marketplace test cases still need attention), and Slither surfaces findings to triage
 - backend agent APIs and live on-chain integration are still pending
+
+See [ROADMAP.md](ROADMAP.md) for the working backlog and current state of each item.
 
 This means Bora is beyond the idea stage, but it is not yet a production marketplace deployment.
 
 ## Tech Stack
 
-- **Frontend**: React + Vite + TypeScript + Tailwind
-- **Blockchain**: Base L2 (Optimism stack)
-- **Wallet**: wagmi + viem
+- **Frontend**: React + Vite + TypeScript + Tailwind (implemented; the simulation runs entirely on mock data in the browser)
+- **Blockchain**: Base L2 (Optimism stack) *(planned)*
+- **Wallet**: wagmi + viem *(planned — the simulator uses a mock wallet today)*
 - **Stablecoin**: USDC
-- **Storage**: IPFS (later)
+- **Storage**: IPFS *(later)*
 
 ## Product Ideas To Borrow
 
@@ -71,14 +73,15 @@ We can strengthen Bora by borrowing a few agent-native product patterns:
 bora-agent-market/
 ├── docs/                       # Strategy & analysis
 │   ├── economics-analysis.md   # Validator APY math
-│   ├── knowledge-base.md       # Full project vision
 │   └── architecture.md         # Tech decisions
-├── contracts/                  # Solidity staking engine
-├── validator-sim/              # Phase 0: Staking simulation
+├── contracts/                  # Solidity staking engine + Foundry tests
+├── validator-sim/              # Phase 0: staking simulation (React + Vite)
 │   ├── src/
 │   ├── public/
 │   └── package.json
-├── backend/                    # (Phase 2: Agent API)
+├── backend/                    # (Phase 2: Agent API — scaffold, not built yet)
+├── ROADMAP.md                  # Working backlog
+├── QUICKSTART.md               # How to run everything
 └── README.md
 ```
 
@@ -92,12 +95,15 @@ npm run dev
 
 ## Testing And CI
 
-- Frontend checks: `.github/workflows/frontend.yml`
-- Contract checks: `.github/workflows/contracts.yml`
-- Security analysis: `.github/workflows/slither.yml`
-- Fuzz coverage: `contracts/test/BoraStakingFuzz.t.sol` and `contracts/test/BoraMarketplaceFuzz.t.sol`
+- Frontend checks (build, lint, unit tests): `.github/workflows/frontend.yml`
+- Contract checks (Foundry): `.github/workflows/contracts.yml`
+- Security analysis (Slither): `.github/workflows/slither.yml`
+- Contract tests: `contracts/test/` — unit, integration, fuzz, and a dedicated `InsurancePool.t.sol`
+- Frontend unit tests: `validator-sim/tests/` (run with `npm test`)
 
 ## Roadmap
+
+High-level phases below; the actionable backlog with current status lives in [ROADMAP.md](ROADMAP.md).
 
 - [x] Economics analysis complete
 - [x] Anti-collusion design complete
@@ -106,7 +112,6 @@ npm run dev
 - [ ] Phase 1.5: Contract audit hardening and expanded security review
 - [ ] Phase 2: Agent API for autonomous bidding
 - [ ] Phase 2.5: Portable agent identity + human verification
-- [ ] Phase 2.5: Short-lived auth tokens for validator agents
 - [ ] Phase 3: Full marketplace launch
 
 ## Why This Matters

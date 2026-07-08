@@ -30,6 +30,8 @@ npm run dev
 
 Open <http://localhost:5173>.
 
+The UI is terminal-styled and has three views: a boot-screen **home**, the **simulator**, and an **about** page that explains the economics.
+
 **What you are testing**
 
 - Whether validators will stake capital for a 1.0% commission
@@ -38,10 +40,11 @@ Open <http://localhost:5173>.
 
 **Demo flow**
 
-1. Click `Start Demo` or `Connect Mock Wallet`.
-2. Take one or more validation jobs from the listings section.
-3. Watch active stake, projected APY, realized earnings, and success rate update.
-4. Use the dispute simulator to resolve a staked listing as either buyer-win or validator-win.
+1. From the home screen, click `[ enter simulator ]` (or the `simulator` tab in the header).
+2. Click `Start Demo` to connect the mock wallet.
+3. Take one or more validation jobs from the listings section.
+4. Watch active stake, projected APY, realized earnings, and success rate update.
+5. Use the dispute simulator to resolve a staked listing as either buyer-win or validator-win.
 
 **Useful commands**
 
@@ -73,10 +76,12 @@ foundryup
 
 ### Install Contract Dependencies
 
+`contracts/lib/` is gitignored, so install the pinned dependencies locally (these match CI). Remappings for `forge-std` and `@openzeppelin/contracts` are committed in `contracts/remappings.txt`.
+
 ```bash
 cd contracts
-forge install foundry-rs/forge-std
-forge install OpenZeppelin/openzeppelin-contracts
+forge install foundry-rs/forge-std@v1.9.4
+forge install OpenZeppelin/openzeppelin-contracts@v5.1.0
 ```
 
 ### Test The Contracts
@@ -86,6 +91,10 @@ forge build
 forge test -vv
 forge test --gas-report
 ```
+
+> Note: the suite compiles and most tests pass, including the `InsurancePool`
+> suite. A couple of `BoraMarketplace` escrow cases currently fail — see
+> [ROADMAP.md](ROADMAP.md).
 
 ---
 
@@ -120,25 +129,29 @@ Covers the contract system, dispute flow, Base L2 deployment direction, and secu
 
 ### Complete
 
-- Validator economics simulation UI
+- Validator economics simulation UI (terminal-styled home, simulator, and about views)
 - Core Solidity contracts
-- Unit, integration, and fuzz coverage for major contract flows
-- Frontend, contract, and Slither CI workflows
+- Unit, integration, and fuzz coverage for major contract flows, plus a dedicated `InsurancePool` suite
+- Frontend, contract, and Slither CI workflows (frontend workflow is green)
 - Economics and architecture docs
 
-### Still Missing
+### In Progress / Still Missing
 
+- Two `BoraMarketplace` escrow test cases to fix
+- Slither findings to triage
 - Backend agent API
 - Live wallet/on-chain frontend integration
 - Testnet deployment
 - External audit and deeper security hardening
 - Production dispute operations and reviewer tooling
 
+See [ROADMAP.md](ROADMAP.md) for the full backlog and status of each item.
+
 ---
 
 ## Next Actions
 
-1. Keep frontend and contract CI green.
+1. Resolve the failing `BoraMarketplace` escrow tests and triage Slither findings.
 2. Expand dispute and insurance edge-case tests.
 3. Add a minimal backend API for agent identity, listing reads, validation bids, dispute evidence, and trust signals.
 4. Prepare Base Sepolia deployment only after hardening and internal review.
