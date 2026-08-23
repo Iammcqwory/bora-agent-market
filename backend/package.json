@@ -1,0 +1,9 @@
+{
+  "name": "bora-b402-backend",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "test": "node --test --experimental-strip-types tests/b402Validation.test.ts"
+  }
+}

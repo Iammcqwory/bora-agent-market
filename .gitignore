@@ -12,3 +12,6 @@ contracts/cache/
 contracts/lib/
 contracts/broadcast/
 contracts/.env
+backend/.env*
+!backend/.env.example
+backend/secrets/
