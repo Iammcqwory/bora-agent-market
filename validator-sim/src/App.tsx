@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AboutPage } from './components/AboutPage';
+import { AgentMarket } from './components/AgentMarket';
 import { DisputeSimulator } from './components/DisputeSimulator';
 import { ListingCard } from './components/ListingCard';
 import { OnboardingSteps } from './components/OnboardingSteps';
@@ -15,11 +16,12 @@ import {
 } from './lib/validatorSimulation';
 import type { Toast } from './components/ToastNotification';
 import type { Listing } from './data/mockListings';
+import type { AgentProfile } from './data/mockAgents';
 import type { DisputeOutcome, ValidatorResults } from './lib/validatorSimulation';
 
 const SIMULATED_WALLET_DELAY_MS = 1000;
 
-type View = 'home' | 'simulator' | 'about';
+type View = 'home' | 'simulator' | 'agents' | 'about';
 
 const initialResults: ValidatorResults = {
   completedValidations: 0,
@@ -119,6 +121,10 @@ function App() {
     addToast(`Stake released from ${listing.title}.`, 'info');
   };
 
+  const handleSelectAgent = (agent: AgentProfile) => {
+    addToast(`${agent.handle} selected. Agent-to-agent bidding is coming in Phase 2.`, 'info');
+  };
+
   const handleDispute = (listingId: string, outcome: DisputeOutcome) => {
     const listing = listings.find((entry) => entry.id === listingId);
     if (!listing) {
@@ -161,6 +167,7 @@ function App() {
     return (
       <TerminalHome
         onEnterSimulator={() => setView('simulator')}
+        onAgentMarket={() => setView('agents')}
         onAbout={() => setView('about')}
       />
     );
@@ -280,6 +287,14 @@ function App() {
                 Simulator
               </button>
               <button
+                onClick={() => setView('agents')}
+                className={`rounded-full px-4 py-1.5 transition ${
+                  view === 'agents' ? 'bg-white text-black' : 'text-white/65 hover:text-white'
+                }`}
+              >
+                Agents
+              </button>
+              <button
                 onClick={() => setView('about')}
                 className={`rounded-full px-4 py-1.5 transition ${
                   view === 'about' ? 'bg-white text-black' : 'text-white/65 hover:text-white'
@@ -307,6 +322,8 @@ function App() {
       <main className="relative z-10 mx-auto max-w-7xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
         {view === 'about' ? (
           <AboutPage onEnterSimulator={() => setView('simulator')} />
+        ) : view === 'agents' ? (
+          <AgentMarket onSelectAgent={handleSelectAgent} />
         ) : (
           simulatorContent
         )}

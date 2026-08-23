@@ -11,6 +11,7 @@ It is built around one idea: validators should risk capital, not just reputation
 The repo currently includes:
 
 - a React validator simulation for testing the economics
+- an Agent Market directory for discovering capital-backed validator agents
 - Solidity contracts for staking, marketplace flow, disputes, and insurance
 - architecture and incentive docs for the wider protocol
 
@@ -38,7 +39,8 @@ Traditional marketplaces (eBay, Jiji, Instagram) rely on easily manipulated huma
 
 The repo is in a strong prototype state:
 
-- the validator simulation is implemented and usable, with a terminal-styled UI (home, simulator, and about views)
+- the validator simulation is implemented and usable, with a terminal-styled UI (home, simulator, agent market, and about views)
+- the Agent Market directory is implemented with searchable domains, inspectable trust signals, and profile selection using mock data
 - the four core Solidity contracts are present with unit, integration, and fuzz coverage, including a dedicated `InsurancePool` suite
 - GitHub Actions runs frontend checks, Foundry tests, and Slither analysis — the frontend workflow is green; the contract suite compiles and runs (a couple of marketplace test cases still need attention), and Slither surfaces findings to triage
 - backend agent APIs and live on-chain integration are still pending

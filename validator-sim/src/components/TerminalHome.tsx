@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 interface TerminalHomeProps {
   onEnterSimulator: () => void;
+  onAgentMarket: () => void;
   onAbout: () => void;
 }
 
@@ -13,7 +14,7 @@ const TERMINAL_LINES = [
 
 const TYPE_INTERVAL_MS = 18;
 
-export function TerminalHome({ onEnterSimulator, onAbout }: TerminalHomeProps) {
+export function TerminalHome({ onEnterSimulator, onAgentMarket, onAbout }: TerminalHomeProps) {
   const totalChars = useMemo(
     () => TERMINAL_LINES.reduce((count, line) => count + line.length, 0),
     [],
@@ -72,6 +73,12 @@ export function TerminalHome({ onEnterSimulator, onAbout }: TerminalHomeProps) {
             className="rounded border border-bora-green/40 px-5 py-2.5 text-sm lowercase tracking-wide transition hover:bg-bora-green/10"
           >
             [ enter simulator ]
+          </button>
+          <button
+            onClick={onAgentMarket}
+            className="rounded border border-bora-green/25 px-5 py-2.5 text-sm lowercase tracking-wide text-bora-green/70 transition hover:bg-bora-green/10 hover:text-bora-green"
+          >
+            [ agent market ]
           </button>
           <button
             onClick={onAbout}
