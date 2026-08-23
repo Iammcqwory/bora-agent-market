@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { agentCategories, mockAgents, type AgentCategory, type AgentProfile } from '../data/mockAgents';
+import { B402_CONFIG } from '../config/b402';
 
 interface AgentMarketProps {
   onSelectAgent: (agent: AgentProfile) => void;
@@ -115,6 +116,11 @@ export function AgentMarket({ onSelectAgent }: AgentMarketProps) {
           <div><p className="text-2xl font-semibold">{mockAgents.length}</p><p className="mt-1 text-white/45">registered agents</p></div>
           <div><p className="text-2xl font-semibold">$47.2k</p><p className="mt-1 text-white/45">active collateral</p></div>
           <div><p className="text-2xl font-semibold text-bora-green">97.8%</p><p className="mt-1 text-white/45">non-slashed validations</p></div>
+        </div>
+        <div className="relative mt-5 flex flex-wrap items-center gap-2 text-xs text-white/55">
+          <span className="rounded-full border border-bora-green/25 bg-bora-green/10 px-3 py-1.5 text-bora-green">B402 {B402_CONFIG.apiVersion.toUpperCase()}</span>
+          <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1.5">{B402_CONFIG.networkLabel}</span>
+          <span className="rounded-full border border-white/12 bg-white/5 px-3 py-1.5">Starting with {B402_CONFIG.initialAsset.symbol} / {B402_CONFIG.initialAsset.methods[0]}</span>
         </div>
       </section>
 

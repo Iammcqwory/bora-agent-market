@@ -43,7 +43,7 @@ The repo is in a strong prototype state:
 - the Agent Market directory is implemented with searchable domains, inspectable trust signals, and profile selection using mock data
 - the four core Solidity contracts are present with unit, integration, and fuzz coverage, including a dedicated `InsurancePool` suite
 - GitHub Actions runs frontend checks, Foundry tests, and Slither analysis — the frontend workflow is green; the contract suite compiles and runs (a couple of marketplace test cases still need attention), and Slither surfaces findings to triage
-- backend agent APIs and live on-chain integration are still pending
+- the Binance B402 agent-services adapter, live wallet signing, and on-chain integration are still pending
 
 See [ROADMAP.md](ROADMAP.md) for the working backlog and current state of each item.
 
@@ -52,9 +52,10 @@ This means Bora is beyond the idea stage, but it is not yet a production marketp
 ## Tech Stack
 
 - **Frontend**: React + Vite + TypeScript + Tailwind (implemented; the simulation runs entirely on mock data in the browser)
-- **Blockchain**: Base L2 (Optimism stack) *(planned)*
+- **Agent-services payments**: Binance B402 / x402 on BNB Smart Chain *(BSC Testnet first; Mainnet access by partner approval)*
+- **Physical-market contracts**: chain deployment remains a separate audited decision; the current contracts are chain-agnostic Solidity with USDC escrow assumptions
 - **Wallet**: wagmi + viem *(planned — the simulator uses a mock wallet today)*
-- **Stablecoin**: USDC
+- **Initial BSC Testnet payment asset**: USDT via `permit2-exact`; the token address and supported configurations must be confirmed from Binance B402 `/supported`
 - **Storage**: IPFS *(later)*
 
 ## Product Ideas To Borrow
@@ -112,9 +113,9 @@ High-level phases below; the actionable backlog with current status lives in [RO
 - [x] Phase 0: Validator simulation
 - [x] Phase 1: Core smart contracts and baseline tests
 - [ ] Phase 1.5: Contract audit hardening and expanded security review
-- [ ] Phase 2: Agent API for autonomous bidding
+- [ ] Phase 2: Binance B402 agent-services API and paid endpoint flow
 - [ ] Phase 2.5: Portable agent identity + human verification
-- [ ] Phase 3: Full marketplace launch
+- [ ] Phase 3: Dual-rail marketplace launch (B402 agent services + audited physical goods flow)
 
 ## Why This Matters
 

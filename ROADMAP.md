@@ -12,32 +12,34 @@ Status: `todo` | `in-progress` | `done` | `blocked`
 
 ## Critical Path (next iteration)
 
-### 1. Build the backend agent API — P0 — `todo`
-The `backend/` directory is an empty scaffold. Build the first real service with the
-endpoints called out in the docs:
-- Agent identity + auth
-- Listing reads
-- Validation bids
-- Dispute evidence submission
-- Trust signals
+### 1. Build the Binance B402 agent-services API — P0 — `todo`
+The `backend/` directory is an empty scaffold. Build the first real service around B402 V2 on BNB Smart Chain Testnet:
+- Paid service discovery and provider metadata
+- HTTP 402 challenge normalization
+- EIP-712 payment payload verification
+- B402 `/verify` and `/settle` adapter
+- Pending settlement reconciliation and receipts
+- Agent identity, auth, and inspectable trust signals
 
 *Why it matters:* single biggest gap; blocks live frontend integration and real agent flows.
 
-### 2. Wire the frontend to live wallet / on-chain data — P0 — `todo`
-`validator-sim` is entirely mock today (mock wallet, mock listings, simulated USDC).
-- Add real wallet connection (wagmi/viem)
-- Replace mock listing feed with contract reads
-- Replace simulated stake/dispute with real transactions
+### 2. Wire the frontend to B402 Testnet payments — P0 — `todo`
+`validator-sim` is still mock today (mock wallet, mock listings, mock agent services).
+- Add BSC Testnet wallet connection (wagmi/viem)
+- Add a real 402 challenge and EIP-712 signing flow
+- Show B402 V2 payment states and settlement receipts
+- Keep B402 credentials and settlement calls server-side
 
-*Depends on:* #3 (deployed contracts).
+*Depends on:* #1 (backend adapter and payment state model).
 
-### 3. Deploy contracts to Base Sepolia testnet — P0 — `blocked`
-Deployment scripts exist but are pre-deployment.
+### 3. Deploy the physical-market contracts to a selected testnet — P0 — `blocked`
+The Solidity contracts remain a separate audited rail from B402 agent-service payments.
+- Select Base or BSC for the physical marketplace after internal review
 - Deploy `BoraStaking`, `BoraMarketplace`, `BoraDispute`, `InsurancePool`
-- Verify on Basescan
+- Verify on the relevant block explorer
 - Wire addresses into frontend config
 
-*Sequencing:* do only after hardening (#4) and internal review. *Blocked on:* deploy keys/funds + audit sign-off.
+*Sequencing:* do only after hardening (#4) and internal review. *Blocked on:* deploy keys/funds, network decision, and audit sign-off.
 
 ### 4. Expand contract hardening tests — P0 — `in-progress`
 - [x] Added `contracts/test/InsurancePool.t.sol` (11 unit tests). **Verified in
@@ -137,5 +139,5 @@ Needed before real disputes can be resolved off the simulator.
 ## Suggested Sequencing
 
 1. **Now:** #4b (fix marketplace tests), #8b (triage Slither finding), #7b (Vercel root dir)
-2. **Next:** #1 (backend API), #4 (more test hardening)
-3. **After hardening + audit:** #2 (live integration), #3 (testnet deploy), #8 (audit), #10 (dispute ops)
+2. **Next:** #1 (B402 V2 backend adapter), #2 (BSC Testnet payment UX), #4 (more test hardening)
+3. **After testnet validation and audit:** #3 (physical-market testnet deployment), #8 (audit), #10 (dispute ops), Bazaar onboarding
